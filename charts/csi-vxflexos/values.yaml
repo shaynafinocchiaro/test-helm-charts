@@ -149,6 +149,30 @@ fsCheck:
   # Default value: "checkOnly"
   mode: "checkOnly"
 
+# spaceReclamation: configure scheduled space reclamation (fstrim/blkdiscard)
+spaceReclamation:
+  # enabled: Enable/Disable space reclamation on node volumes
+  # Allowed values:
+  #   true: enable scheduled fstrim/blkdiscard on staged volumes
+  #   false: disable space reclamation
+  # Default value: false
+  enabled: false
+
+  # schedule: Cron expression for reclamation cycle (5-field format)
+  # Examples: "0 2 * * 0" (weekly Sunday 2AM), "0 */6 * * *" (every 6 hours)
+  # Default value: "0 2 * * 0"
+  schedule: "0 2 * * 0"
+
+  # maxConcurrent: Maximum number of volumes reclaimed in parallel per node
+  # Allowed values: positive integer
+  # Default value: 2
+  maxConcurrent: 2
+
+  # timeout: Timeout in seconds for a single volume reclamation operation
+  # Allowed values: positive integer
+  # Default value: 3600
+  timeout: 3600
+
 # podmonAPIPort: Defines the port to be used within the kubernetes cluster
 # Allowed values:
 #   Any valid and free port.
