@@ -21,7 +21,7 @@ For more information about installing and using Helm, see the
 ## Support
 For any issues, questions or feedback, please contact [Dell support](https://www.dell.com/support/incidents-online/en-us/contactus/product/container-storage-modules).
 
-## How to
+## How to Install
 
 ```console
 $ helm repo add dell https://dell.github.io/helm-charts
