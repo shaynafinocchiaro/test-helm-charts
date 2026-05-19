@@ -131,7 +131,7 @@ jobs:
 
       - name: Apply version updates
         run: |
-          bash ./.github/scripts/apply-helm-versions.sh
+          bash ./helm-charts/.github/scripts/apply-helm-versions.sh
 
       - name: Generate GitHub App Token
         uses: actions/create-github-app-token@v3.1.1
