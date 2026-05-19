@@ -125,7 +125,7 @@ jobs:
       - name: Checkout helm charts
         uses: actions/checkout@v6
         with:
-          repository: dell/helm-charts
+          repository: shaynafinocchiaro/test-helm-charts
           path: helm-charts
           ref: ${{ inputs.target-branch }}
 
