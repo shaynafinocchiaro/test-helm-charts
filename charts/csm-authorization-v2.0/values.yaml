@@ -31,7 +31,7 @@ authorization:
     opa:
       image: docker.io/openpolicyagent/opa:0.70.0
     opaKubeMgmt:
-      image: openpolicyagent/kube-mgmt:9.3.0
+      image: openpolicyagent/kube-mgmt:11.0.6
 
   # hostname used for TLS certificate SANs and OpenShift Route
   # NOTE: additional hostnames can be configured in authorization.gateway.hosts
