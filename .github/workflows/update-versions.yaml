@@ -132,7 +132,7 @@ jobs:
       - name: Apply version updates
         working-directory: helm-charts
         run: |
-          bash ../.github/scripts/apply-helm-versions.sh
+          bash ./.github/scripts/apply-helm-versions.sh
 
       - name: Generate GitHub App Token
         uses: actions/create-github-app-token@v3.1.1
