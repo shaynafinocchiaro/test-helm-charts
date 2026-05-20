@@ -142,7 +142,7 @@ infer_chart_version_from_name() {
     csm-disaster-recovery)    result="${CSM_DISASTER_RECOVERY:-}" ;;
     csm-replication)          result="${CSM_REPLICATION:-}" ;;
     karavi-observability)     result="${KARAVI_OBSERVABILITY:-}" ;;
-    container-storage-modules) result="${CSM_VERSION:-}" ;;
+    container-storage-modules) result="${CONTAINER_STORAGE_MODULES:-}" ;;
   esac
   echo "$result"
 }
@@ -163,7 +163,7 @@ infer_dependency_version() {
     csm-disaster-recovery)     result="${CSM_DISASTER_RECOVERY:-}" ;;
     csm-replication)           result="${CSM_REPLICATION:-}" ;;
     karavi-observability)      result="${KARAVI_OBSERVABILITY:-}" ;;
-    container-storage-modules) result="${CSM_VERSION:-}" ;;
+    container-storage-modules) result="${CONTAINER_STORAGE_MODULES:-}" ;;
   esac
   echo "$result"
 }
@@ -327,7 +327,11 @@ for chart_dir in "${CHARTS[@]}"; do
       fi
       new_value="${repo}:${new_tag}"
 
-      update_field "$values_file" "$path" "$new_value" "$chart_dir image"
+      if [[ "$value" != "$new_value" ]]; then
+        tmp=$(mktemp)
+        sed "s|${value}|${new_value}|" "$values_file" > "$tmp" && mv "$tmp" "$values_file"
+        log_change "$chart_dir image ($path)" "$value" "$new_value"
+      fi
 
     done < <(detect_flat_images "$values_file")
   fi
