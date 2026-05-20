@@ -129,8 +129,13 @@ jobs:
           path: helm-charts
           ref: ${{ inputs.target-branch }}
 
+      - name: Install yq
+        run: |
+          go install github.com/mikefarah/yq/v4@latest
+
       - name: Apply version updates
         working-directory: helm-charts
+        shell: bash
         run: |
           bash ./.github/scripts/apply-helm-versions.sh
 
