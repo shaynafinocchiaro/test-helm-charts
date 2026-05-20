@@ -230,7 +230,8 @@ for chart_dir in "${CHARTS[@]}"; do
 
   # ---- Infer from flat images
   if [[ -f "$values_file" ]]; then
-    while read -r entry; do
+    while IFS= read -r entry; do
+      [[ -z "$entry" ]] && continue
       value=$(echo "$entry" | jq -r '.value')
 
       parsed=$(parse_image_string "$value")
@@ -243,7 +244,7 @@ for chart_dir in "${CHARTS[@]}"; do
         break
       fi
       warn "$chart_dir: unknown image component '$component' in $values_file; skipping for chart version inference"
-    done <<< "$(detect_flat_images "$values_file")"
+    done < <(detect_flat_images "$values_file")
   fi
 
   # ---- fallback Chart.yaml
@@ -268,7 +269,8 @@ for chart_dir in "${CHARTS[@]}"; do
 
   # Flat images
   if [[ -f "$values_file" ]]; then
-    while read -r entry; do
+    while IFS= read -r entry; do
+      [[ -z "$entry" ]] && continue
       path=$(echo "$entry" | jq -r '.path')
       value=$(echo "$entry" | jq -r '.value')
 
@@ -285,7 +287,7 @@ for chart_dir in "${CHARTS[@]}"; do
 
       update_field "$values_file" "$path" "$new_value" "$chart_dir image"
 
-    done <<< "$(detect_flat_images "$values_file")"
+    done < <(detect_flat_images "$values_file")
   fi
 done
 
