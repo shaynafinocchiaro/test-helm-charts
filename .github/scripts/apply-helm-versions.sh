@@ -266,7 +266,13 @@ for chart_dir in "${CHARTS[@]}"; do
         warn "$chart_dir: unknown image component '$component' at $values_file:$path; leaving as-is"
         continue
       fi
-      new_value="${repo}:$(normalize_version "$inferred")"
+      old_tag=${parsed#*|}
+      if [[ "$old_tag" == v* ]]; then
+        new_tag="v$(normalize_version "$inferred")"
+      else
+        new_tag="$(normalize_version "$inferred")"
+      fi
+      new_value="${repo}:${new_tag}"
 
       update_field "$values_file" "$path" "$new_value" "$chart_dir image"
 
