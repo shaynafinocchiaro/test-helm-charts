@@ -7,6 +7,7 @@
 #  http://www.apache.org/licenses/LICENSE-2.0
 
 #!/bin/bash
+
 set -euo pipefail
 
 SUMMARY_FILE="version-summary.txt"
@@ -46,6 +47,10 @@ require_non_empty() {
   fi
 }
 
+warn() {
+  echo "WARN: $*" >&2
+}
+
 # Exact component extraction
 # Example:
 # quay.io/dell/container-storage-modules/csi-isilon:v2.17.0 → csi-isilon
@@ -69,6 +74,10 @@ infer_version_from_component() {
     csm-authorization) result="${CSM_AUTHORIZATION:-}" ;;
     csireverseproxy) result="${CSIREVERSEPROXY:-}" ;;
     karavi-observability) result="${KARAVI_OBSERVABILITY:-}" ;;
+    karavi-metrics-powerflex) result="${KARAVI_METRICS_POWERFLEX:-}" ;;
+    csm-metrics-powerstore) result="${CSM_METRICS_POWERSTORE:-}" ;;
+    csm-metrics-powerscale) result="${CSM_METRICS_POWERSCALE:-}" ;;
+    csm-metrics-powermax) result="${CSM_METRICS_POWERMAX:-}" ;;
 
     # Sidecars
     csi-resizer) result="${CSI_RESIZER:-}" ;;
@@ -85,15 +94,52 @@ infer_version_from_component() {
     grafana) result="${GRAFANA:-}" ;;
     prometheus) result="${PROMETHEUS:-}" ;;
     openpolicyagent-opa) result="${OPENPOLICYAGENT_OPA:-}" ;;
+    openpolicyagent-kube-mgmt) result="${OPENPOLICYAGENT_KUBE_MGMT:-}" ;;
     redis) result="${REDIS:-}" ;;
 
     *)
-      echo "Unknown component: $component"
-      exit 1
+      result=""
       ;;
   esac
 
-  require_non_empty "$component env var" "$result"
+  if [[ -z "$result" ]]; then
+    case "$component" in
+      csi-isilon) echo "ERROR: Missing required env var CSI_POWERSCALE for component '$component'" >&2; exit 1 ;;
+      csi-powerstore) echo "ERROR: Missing required env var CSI_POWERSTORE for component '$component'" >&2; exit 1 ;;
+      csi-powermax) echo "ERROR: Missing required env var CSI_POWERMAX for component '$component'" >&2; exit 1 ;;
+      csi-vxflexos) echo "ERROR: Missing required env var CSI_VXFLEXOS for component '$component'" >&2; exit 1 ;;
+      csi-unity) echo "ERROR: Missing required env var CSI_UNITY for component '$component'" >&2; exit 1 ;;
+      cosi) echo "ERROR: Missing required env var COSI for component '$component'" >&2; exit 1 ;;
+      csm-replication) echo "ERROR: Missing required env var CSM_REPLICATION for component '$component'" >&2; exit 1 ;;
+      karavi-resiliency) echo "ERROR: Missing required env var KARAVI_RESILIENCY for component '$component'" >&2; exit 1 ;;
+      csm-authorization) echo "ERROR: Missing required env var CSM_AUTHORIZATION for component '$component'" >&2; exit 1 ;;
+      csireverseproxy) echo "ERROR: Missing required env var CSIREVERSEPROXY for component '$component'" >&2; exit 1 ;;
+      karavi-observability) echo "ERROR: Missing required env var KARAVI_OBSERVABILITY for component '$component'" >&2; exit 1 ;;
+      karavi-metrics-powerflex) echo "ERROR: Missing required env var KARAVI_METRICS_POWERFLEX for component '$component'" >&2; exit 1 ;;
+      csm-metrics-powerstore) echo "ERROR: Missing required env var CSM_METRICS_POWERSTORE for component '$component'" >&2; exit 1 ;;
+      csm-metrics-powerscale) echo "ERROR: Missing required env var CSM_METRICS_POWERSCALE for component '$component'" >&2; exit 1 ;;
+      csm-metrics-powermax) echo "ERROR: Missing required env var CSM_METRICS_POWERMAX for component '$component'" >&2; exit 1 ;;
+      csi-resizer) echo "ERROR: Missing required env var CSI_RESIZER for component '$component'" >&2; exit 1 ;;
+      csi-provisioner) echo "ERROR: Missing required env var CSI_PROVISIONER for component '$component'" >&2; exit 1 ;;
+      csi-attacher) echo "ERROR: Missing required env var CSI_ATTACHER for component '$component'" >&2; exit 1 ;;
+      csi-snapshotter) echo "ERROR: Missing required env var CSI_SNAPSHOTTER for component '$component'" >&2; exit 1 ;;
+      csi-node-driver-registrar) echo "ERROR: Missing required env var CSI_NODE_DRIVER_REGISTRAR for component '$component'" >&2; exit 1 ;;
+      csi-external-health-monitor-controller) echo "ERROR: Missing required env var CSI_EXTERNAL_HEALTH_MONITOR_CONTROLLER for component '$component'" >&2; exit 1 ;;
+      csi-metadata-retriever) echo "ERROR: Missing required env var CSI_METADATA_RETRIEVER for component '$component'" >&2; exit 1 ;;
+      opentelemetry-collector) echo "ERROR: Missing required env var OPENTELEMETRY_COLLECTOR for component '$component'" >&2; exit 1 ;;
+      nginx-unprivileged) echo "ERROR: Missing required env var NGINX_UNPRIVILEGED for component '$component'" >&2; exit 1 ;;
+      grafana) echo "ERROR: Missing required env var GRAFANA for component '$component'" >&2; exit 1 ;;
+      prometheus) echo "ERROR: Missing required env var PROMETHEUS for component '$component'" >&2; exit 1 ;;
+      openpolicyagent-opa) echo "ERROR: Missing required env var OPENPOLICYAGENT_OPA for component '$component'" >&2; exit 1 ;;
+      openpolicyagent-kube-mgmt) echo "ERROR: Missing required env var OPENPOLICYAGENT_KUBE_MGMT for component '$component'" >&2; exit 1 ;;
+      redis) echo "ERROR: Missing required env var REDIS for component '$component'" >&2; exit 1 ;;
+      *)
+        echo ""
+        return 0
+        ;;
+    esac
+  fi
+
   echo "$result"
 }
 
@@ -145,7 +191,7 @@ detect_chart_version() {
 
 # Dependency-aware mapping
 update_dependencies() {
-  local chart_file=$1 chart_dir=$2
+  local chart_file=$1 chart_dir=$2 default_version=$3
 
   DEP_COUNT=$(yq e '.dependencies | length' "$chart_file" 2>/dev/null || echo 0)
 
@@ -155,6 +201,10 @@ update_dependencies() {
     require_non_empty "dependency name" "$name"
 
     inferred=$(infer_version_from_component "$name")
+    if [[ -z "$inferred" ]]; then
+      warn "$chart_dir: unknown dependency '$name' in $chart_file; using chart version '$default_version'"
+      inferred="$default_version"
+    fi
     version=$(normalize_version "$inferred")
 
     update_field "$chart_file" "dependencies[$i].version" "$version" "$chart_dir dependency"
@@ -187,8 +237,12 @@ for chart_dir in "${CHARTS[@]}"; do
       repo=${parsed%|*}
       component=$(extract_component "$repo")
 
-      chart_version=$(infer_version_from_component "$component")
-      break
+      inferred_version=$(infer_version_from_component "$component")
+      if [[ -n "$inferred_version" ]]; then
+        chart_version="$inferred_version"
+        break
+      fi
+      warn "$chart_dir: unknown image component '$component' in $values_file; skipping for chart version inference"
     done <<< "$(detect_flat_images "$values_file")"
   fi
 
@@ -210,7 +264,7 @@ for chart_dir in "${CHARTS[@]}"; do
   update_field "$chart_file" "appVersion" "$chart_version" "$chart_dir"
 
   # Dependencies
-  update_dependencies "$chart_file" "$chart_dir"
+  update_dependencies "$chart_file" "$chart_dir" "$chart_version"
 
   # Flat images
   if [[ -f "$values_file" ]]; then
@@ -223,6 +277,10 @@ for chart_dir in "${CHARTS[@]}"; do
       component=$(extract_component "$repo")
 
       inferred=$(infer_version_from_component "$component")
+      if [[ -z "$inferred" ]]; then
+        warn "$chart_dir: unknown image component '$component' at $values_file:$path; leaving as-is"
+        continue
+      fi
       new_value="${repo}:$(normalize_version "$inferred")"
 
       update_field "$values_file" "$path" "$new_value" "$chart_dir image"
