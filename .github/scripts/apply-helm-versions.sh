@@ -7,6 +7,7 @@
 #  http://www.apache.org/licenses/LICENSE-2.0
 
 #!/bin/bash
+set -euo pipefail
 
 SUMMARY_FILE="version-summary.txt"
 > "$SUMMARY_FILE"
@@ -56,42 +57,42 @@ infer_version_from_component() {
   local component=$1 result=""
 
   case "$component" in
-    csi-isilon) echo "${CSI_POWERSCALE:-}" ;;
-    csi-powerstore) echo "${CSI_POWERSTORE:-}" ;;
-    csi-powermax) echo "${CSI_POWERMAX:-}" ;;
-    csi-vxflexos) echo "${CSI_VXFLEXOS:-}" ;;
-    csi-unity) echo "${CSI_UNITY:-}" ;;
-    cosi) echo "${COSI:-}" ;;
+    csi-isilon) result="${CSI_POWERSCALE:-}" ;;
+    csi-powerstore) result="${CSI_POWERSTORE:-}" ;;
+    csi-powermax) result="${CSI_POWERMAX:-}" ;;
+    csi-vxflexos) result="${CSI_VXFLEXOS:-}" ;;
+    csi-unity) result="${CSI_UNITY:-}" ;;
+    cosi) result="${COSI:-}" ;;
 
-    csm-replication) echo "${CSM_REPLICATION:-}" ;;
-    karavi-resiliency) echo "${KARAVI_RESILIENCY:-}" ;;
-    csm-authorization) echo "${CSM_AUTHORIZATION:-}" ;;
-    csireverseproxy) echo "${CSIREVERSEPROXY:-}" ;;
-    karavi-observability) echo "${KARAVI_OBSERVABILITY:-}" ;;
+    csm-replication) result="${CSM_REPLICATION:-}" ;;
+    karavi-resiliency) result="${KARAVI_RESILIENCY:-}" ;;
+    csm-authorization) result="${CSM_AUTHORIZATION:-}" ;;
+    csireverseproxy) result="${CSIREVERSEPROXY:-}" ;;
+    karavi-observability) result="${KARAVI_OBSERVABILITY:-}" ;;
 
     # Sidecars
-    csi-resizer) echo "${CSI_RESIZER:-}" ;;
-    csi-provisioner) echo "${CSI_PROVISIONER:-}" ;;
-    csi-attacher) echo "${CSI_ATTACHER:-}" ;;
-    csi-snapshotter) echo "${CSI_SNAPSHOTTER:-}" ;;
-    csi-node-driver-registrar) echo "${CSI_NODE_DRIVER_REGISTRAR:-}" ;;
-    csi-external-health-monitor-controller) echo "${CSI_EXTERNAL_HEALTH_MONITOR_CONTROLLER:-}" ;;
-    csi-metadata-retriever) echo "${CSI_METADATA_RETRIEVER:-}" ;;
+    csi-resizer) result="${CSI_RESIZER:-}" ;;
+    csi-provisioner) result="${CSI_PROVISIONER:-}" ;;
+    csi-attacher) result="${CSI_ATTACHER:-}" ;;
+    csi-snapshotter) result="${CSI_SNAPSHOTTER:-}" ;;
+    csi-node-driver-registrar) result="${CSI_NODE_DRIVER_REGISTRAR:-}" ;;
+    csi-external-health-monitor-controller) result="${CSI_EXTERNAL_HEALTH_MONITOR_CONTROLLER:-}" ;;
+    csi-metadata-retriever) result="${CSI_METADATA_RETRIEVER:-}" ;;
 
     # Third-party
-    opentelemetry-collector) echo "${OPENTELEMETRY_COLLECTOR:-}" ;;
-    nginx-unprivileged) echo "${NGINX_UNPRIVILEGED:-}" ;;
-    grafana) echo "${GRAFANA:-}" ;;
-    prometheus) echo "${PROMETHEUS:-}" ;;
-    openpolicyagent-opa) echo "${OPENPOLICYAGENT_OPA:-}" ;;
-    redis) echo "${REDIS:-}" ;;
+    opentelemetry-collector) result="${OPENTELEMETRY_COLLECTOR:-}" ;;
+    nginx-unprivileged) result="${NGINX_UNPRIVILEGED:-}" ;;
+    grafana) result="${GRAFANA:-}" ;;
+    prometheus) result="${PROMETHEUS:-}" ;;
+    openpolicyagent-opa) result="${OPENPOLICYAGENT_OPA:-}" ;;
+    redis) result="${REDIS:-}" ;;
 
-    *) 
+    *)
       echo "Unknown component: $component"
       exit 1
       ;;
   esac
-  
+
   require_non_empty "$component env var" "$result"
   echo "$result"
 }
