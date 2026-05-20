@@ -24,7 +24,6 @@ driverName: "csi-powerstore.dellemc.com"
 # "version" is used to verify the values file matches driver version
 # Not recommend to change
 version: v2.17.0
-
 # "images" defines every container images used for the driver and its sidecars.
 #  To use your own images, or a private registry, change the values here.
 images:
@@ -44,7 +43,6 @@ images:
     image: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.16.0
   healthmonitor:
     image: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.17.0
-
   # CSM sidecars
   replication:
     image: quay.io/dell/container-storage-modules/dell-csi-replicator:v1.15.0
@@ -54,16 +52,13 @@ images:
     image: quay.io/dell/container-storage-modules/csi-metadata-retriever:v1.14.0
   authorization:
     image: quay.io/dell/container-storage-modules/csm-authorization-sidecar:v2.5.0
-
 # Represents number of certificate secrets, which user is going to create for ssl authentication. (powerstore-cert-0..powerstore-cert-n)
 # If user does not use certificate, set to 0
 certSecretCount: 0
-
 # Specify kubelet config dir path.
 # Ensure that the config.yaml file is present at this path.
 # Default value: /var/lib/kubelet
 kubeletConfigDir: /var/lib/kubelet
-
 # nodeFCPortsFilterFile: It is the name of the environment variable which store path to the file which
 # provide list of WWPN which should be used by the driver for FC connection on this node
 # If file not exist or empty or in invalid format, then the driver will use all available FC ports
@@ -73,19 +68,16 @@ kubeletConfigDir: /var/lib/kubelet
 # content of the file:
 #   21:00:00:29:ff:48:9f:6e,21:00:00:29:ff:48:9f:6e
 nodeFCPortsFilterFile: /etc/fc-ports-filter
-
 # externalAccess: allows to specify additional entries for hostAccess of NFS volumes. Both single IP address and subnet are valid entries.
 # Allowed Values: x.x.x.x/xx or x.x.x.x
 # Default Value: None
 externalAccess:
-
 # exclusiveAccess: controls whether only externalAccess entries are added to the NFS export.
 # If set to true → only IP/CIDR specified in externalAccess will be included (node IP excluded).
 # If set to false (default) → both node IP and externalAccess entry will be added to the export.
 # Allowed Values: true or false
 # Default Value: false
 exclusiveAccess: false
-
 # imagePullPolicy: Policy to determine if the image should be pulled prior to starting the container.
 # Allowed values:
 #  Always: Always pull the image.
@@ -93,14 +85,12 @@ exclusiveAccess: false
 #  Never: Never pull the image.
 # Default value: None
 imagePullPolicy: IfNotPresent
-
 # maxPowerstoreVolumesPerNode: Specify default value for maximum number of volumes that controller can publish to the node.
 # If value is zero CO SHALL decide how many volumes of this type can be published by the controller to the node.
 # This limit is applicable to all the nodes in the cluster for which node label 'max-powerstore-volumes-per-node' is not set.
 # Allowed values: n, where n >= 0
 # Default value: 0
 maxPowerstoreVolumesPerNode: 0
-
 # nfsAcls: enables setting permissions on NFS mount directory
 # This value acts as default value for NFS ACL (nfsAcls), if not specified for an array config in secret
 # Permissions can be specified in two formats:
@@ -115,19 +105,16 @@ maxPowerstoreVolumesPerNode: 0
 # Optional: true
 # Default value: "0777"
 nfsAcls: "0777"
-
 # podmonAPIPort: Defines the port to be used within the kubernetes cluster
 # Allowed values:
 #   Any valid and free port.
 # Default value: 8083
 podmonAPIPort: 8083
-
 # apiTimeout: Defines the timeout for PowerStore API calls in seconds
 # Allowed values: Number followed by unit (s,m,h)
 # Examples: 60s, 5m, 1h
 # Default value: 120s
 apiTimeout: "120s"
-
 # fsCheck: configure automatic file system check before mount
 fsCheck:
   # enabled: Enable/Disable automatic file system check before mount
@@ -136,12 +123,10 @@ fsCheck:
   #   false: disable file system check
   # Default value: false
   enabled: false
-
   # mode: Controls the file system check mode
   # Allowed values: "checkOnly", "checkAndRepair"
   # Default value: "checkOnly"
   mode: "checkOnly"
-
 # spaceReclamation: Settings for space reclamation (fstrim/blkdiscard)
 # Reclaims unused storage blocks from Persistent Volumes.
 # Allowed Values:
@@ -155,7 +140,6 @@ spaceReclamation:
   schedule: "0 2 * * 0"
   maxConcurrentVolumes: 2
   timeoutSeconds: 14400
-
 # controller: configure controller specific parameters
 controller:
   # controllerCount: defines the number of csi-powerstore controller pods to deploy to
@@ -163,13 +147,11 @@ controller:
   # Allowed values: n, where n > 0
   # Default value: None
   controllerCount: 2
-
   # volumeNamePrefix: defines a string prepended to each volume created by the CSI driver.
   # Allowed values: string
   # Default value: csivol
   # Examples: "k8s", "app1"
   volumeNamePrefix: csivol
-
   # vgsnapshot: allows to configure volumegroup snapshots
   # volumegroupsnapshot CRDs must be installed before installing driver
   volumeGroupSnapshot:
@@ -179,7 +161,6 @@ controller:
     #   false: Disable volumegroup snapshot feature-gate on snapshotter sidecar
     # Default value: false
     enabled: false
-
   # snapshot: allows to enable/disable snapshot feature
   # snapshot CRDs needs to be installed before enabling this feature
   snapshot:
@@ -189,7 +170,6 @@ controller:
     #   false: disable volume snapshot feature(do not install snapshotter sidecar)
     # Default value: None
     enabled: true
-
     # snapNamePrefix: Prefix to apply to the names of a created snapshots
     # Allowed values: string
     # Default value: csi-snap
@@ -211,7 +191,6 @@ controller:
     #   false: disable volume expansion feature(do not install resizer sidecar)
     # Default value: true
     enabled: true
-
   healthMonitor:
     # enabled: Enable/Disable health monitor of CSI volumes
     # Allowed values:
@@ -219,18 +198,15 @@ controller:
     #   false: disable checking of health condition of CSI volumes
     # Default value: false
     enabled: false
-
     # interval: Interval of monitoring volume health condition
     # Allowed values: Number followed by unit (s,m,h)
     # Examples: 60s, 5m, 1h
     # Default value: 60s
     interval: 60s
-
     # bindPort: Defines the port for the Health Monitor service
     # Allowed values: Any valid and free port
     # Default value: 8080
     bindPort: 8080
-
   # replication: allows to configure replication
   # Replication CRDs must be installed before installing driver
   replication:
@@ -240,17 +216,14 @@ controller:
     #   false: disable replication feature(do not install dell-csi-replicator sidecar)
     # Default value: false
     enabled: false
-
     # replicationContextPrefix: prefix to use for naming of resources created by replication feature
     # Allowed values: string
     # Default value: powerstore
     replicationContextPrefix: "powerstore"
-
     # replicationPrefix: prefix to prepend to storage classes parameters
     # Allowed values: string
     # Default value: replication.storage.dell.com
     replicationPrefix: "replication.storage.dell.com"
-
   # nodeSelector: Define node selection constraints for controller pods.
   # For the pod to be eligible to run on a node, the node must have each
   # of the indicated key-value pairs as labels.
@@ -276,37 +249,31 @@ controller:
   # - key: "node-role.kubernetes.io/control-plane"
   #   operator: "Exists"
   #   effect: "NoSchedule"
-
 # node: configure node pod specific parameters
 node:
   # nodeNamePrefix: defines a string prepended to each node registered by the CSI driver.
   # Allowed values: string
   # Default value: None
   nodeNamePrefix: csi-node
-
   # nodeIDPath: defines the path to file with node identifier (e.g. /etc/machine-id, /etc/hostname).
   # Allowed values: string
   # Default value: None
   nodeIDPath: /etc/machine-id
-
   # volumeDisconnectMaxRetries: Maximum number of retries for volume disconnect
   # Allowed values: Integer
   # Example: 5
   # Default value: 5
   volumeDisconnectMaxRetries: "5"
-
   # volumeDisconnectRetryInterval: Interval between retries for volume disconnect
   # Allowed values: Duration with unit (s, m, h)
   # Example: 5s, 1m
   # Default value: 5s
   volumeDisconnectRetryInterval: "5s"
-
   # volumeDisconnectTimeoutSeconds: Total timeout for volume disconnect operation
   # Allowed values: Duration with unit (s, m, h)
   # Example: 120s, 2m
   # Default value: 120s
   volumeDisconnectTimeoutSeconds: "120s"
-
   healthMonitor:
     # enabled: Enable/Disable health monitor of CSI volumes- volume usage, volume condition
     # Allowed values:
@@ -314,7 +281,6 @@ node:
     #   false: disable checking of health condition of CSI volumes
     # Default value: None
     enabled: false
-
   # nodeSelector: Define node selection constraints for node pods.
   # For the pod to be eligible to run on a node, the node must have each
   # of the indicated key-value pairs as labels.
@@ -367,7 +333,6 @@ node:
   #  - key: "powerstore.podmon.storage.dell.com"
   #    operator: "Exists"
   #    effect: "NoSchedule"
-
 ## PLATFORM ATTRIBUTES
 ######################
 
@@ -380,23 +345,18 @@ connection:
   #   false: disable CHAP
   # Default value: false
   enableCHAP: false
-
 # CSI driver log level
 # Allowed values: "error", "warn"/"warning", "info", "debug", "error"
 # Default value: "info"
 logLevel: "info"
-
 # CSI driver log format
 # Allowed values: "TEXT" or "JSON"
 # Default value: "JSON"
 logFormat: "JSON"
-
 # Following modes are supported: None, File and ReadWriteOnceWithFSType
 fsGroupPolicy: ReadWriteOnceWithFSType
-
 # Allows the controller to round off filesystem to 3Gi which is the minimum supported value
 allowAutoRoundOffFilesystemSize: true
-
 # Storage Capacity Tracking
 # Note: Capacity tracking is supported in kubernetes v1.24 and above, this feature will be automatically disabled in older versions.
 storageCapacity:
@@ -410,7 +370,6 @@ storageCapacity:
   # Allowed values: 1m,2m,3m,...,10m,...,60m etc
   # Default value: 5m
   pollInterval: 5m
-
 # Enable this feature only after contact support for additional information
 podmon:
   enabled: false
@@ -425,7 +384,6 @@ podmon:
       - "--driver-config-params=/powerstore-config-params/driver-config-params.yaml"
       - "--driverPodLabelValue=dell-storage"
       - "--ignoreVolumelessPods=false"
-
   node:
     args:
       - "--csisock=unix:/var/lib/kubelet/plugins/csi-powerstore.dellemc.com/csi_sock"
@@ -437,13 +395,11 @@ podmon:
       - "--driver-config-params=/powerstore-config-params/driver-config-params.yaml"
       - "--driverPodLabelValue=dell-storage"
       - "--ignoreVolumelessPods=false"
-
   # arrayConnectivityTimeout: Defines the timeout (in seconds) for podmon array connectivity timeout check
   # Allowed values: Number followed by unit (s,m,h)
   # Examples: 10s, 1m, 1h
   # Default value: 10s
   arrayConnectivityTimeout: "10s"
-
 # Define multi NAS parameters
 multiNas:
   # threshold: Number of consecutive FS creation failures after which a NAS is put into cooldown.
@@ -456,7 +412,6 @@ multiNas:
   # Allowed values: Number followed by unit (s,m,h) e.g. 60s,1m,2m,3m,...,1h etc
   # Default value: 5m
   cooldownPeriod: 5m
-
 # CSM module attributes
 # authorization: enable csm-authorization for RBAC
 # Deploy and configure authorization before installing driver
@@ -475,7 +430,6 @@ authorization:
   #   "false" - TLS certificate will be verified
   # Default value: "true"
   skipCertificateValidation: true
-
 # Enable installation of Custom Resource Definitions (CRDs) required for Disaster Recovery.
 # This is necessary when using the PowerStore Metro feature.
 # Set `enabled` to `true` to install the Disaster Recovery CRDs.

@@ -4,7 +4,6 @@ global:
   # Allowed values: "error", "warn"/"warning", "info", "debug"
   # Default value: "info"
   logLevel: "info"
-
   # CSI driver log format
   # Allowed values: "TEXT" or "JSON"
   # Default value: "TEXT"
@@ -19,7 +18,6 @@ global:
   # Default value: None
   # Examples: "000000000001,000000000002"
   managedArrays: "000000000001,000000000002"
-
   # defaultCredentialsSecret
   # The name of the Kubernetes Secret containing the details of the PowerMax arrays,
   # their Unisphere endpoints and their login credentials.
@@ -50,7 +48,6 @@ global:
   #   ""      - Automatic selection of transport protocol
   # Default value: "" <empty>
   transportProtocol: ""
-
   # DEPRECATION NOTICE: The storageArrays parameter has been deprecated in this helm chart
   # and will be removed in a future release. It remains for backward compatibility only.
   # storageArrays have been migrated to the 'secret' format. Please refer to the official
@@ -91,7 +88,6 @@ global:
 # Current version of the driver
 # Don't modify this value as this value will be used by the install script
 version: "v2.17.0"
-
 # "images" defines every container images used for the driver and its sidecars.
 #  To use your own images, or a private registry, change the values here.
 images:
@@ -140,7 +136,6 @@ customDriverName:
   #   "false" - Custom driver name is disabled
   # Default value: "false"
   enabled: false
-
 # defaultFsType: Sets the default FS type which will be used
 # for mount volumes if FsType is not specified in the storage class
 # Allowed values:
@@ -148,7 +143,6 @@ customDriverName:
 #   "xfs"  - XFS File system
 # Default value: "ext4"
 defaultFsType: ext4
-
 # fsCheck: configure automatic file system check before mount
 fsCheck:
   # enabled: Enable/Disable automatic file system check before mount
@@ -157,12 +151,10 @@ fsCheck:
   #   false: disable file system check
   # Default value: false
   enabled: false
-
   # mode: Controls the file system check mode
   # Allowed values: "checkOnly", "checkAndRepair"
   # Default value: "checkOnly"
   mode: "checkOnly"
-
 # spaceReclamation: Settings for space reclamation (fstrim/blkdiscard)
 # Reclaims unused storage blocks from Persistent Volumes.
 # Allowed Values:
@@ -176,7 +168,6 @@ spaceReclamation:
   schedule: "0 2 * * 0"
   maxConcurrentVolumes: 2
   timeoutSeconds: 14400
-
 # imagePullPolicy: Policy to determine if the image should be pulled prior to starting the container.
 # Allowed values:
 #  Always: Always pull the image.
@@ -184,12 +175,10 @@ spaceReclamation:
 #  Never: Never pull the image.
 # Default value: None
 imagePullPolicy: IfNotPresent
-
 # Specify kubelet config dir path.
 # Ensure that the config.yaml file is present at this path.
 # Default value: /var/lib/kubelet
 kubeletConfigDir: /var/lib/kubelet
-
 # fsGroupPolicy: Defines if the underlying volume supports changing ownership and permission of the volume before being mounted.
 # Allowed values:
 #   ReadWriteOnceWithFSType: supports volume ownership and permissions change only if the fsType is defined
@@ -199,14 +188,12 @@ kubeletConfigDir: /var/lib/kubelet
 #   None: volumes will be mounted with no modifications.
 # Default value: ReadWriteOnceWithFSType
 fsGroupPolicy: ReadWriteOnceWithFSType
-
 # maxPowermaxVolumesPerNode: Specify default value for maximum number of volumes that controller can publish to the node.
 # If value is zero CO SHALL decide how many volumes of this type can be published by the controller to the node.
 # This limit is applicable to all the nodes in the cluster for which node label 'max-Powermax-volumes-per-node' is not set.
 # Allowed values: n, where n >= 0
 # Default value: 0
 maxPowerMaxVolumesPerNode: 0
-
 # X_CSI_DYNAMIC_SG_ENABLED: Enable/Disable dynamic Storage Group support for the driver
 # When enabled, the driver supports multiple Storage Groups under a single StorageClass
 # When disabled (default), the driver maintains backward compatibility and uses a single Storage Group
@@ -215,7 +202,6 @@ maxPowerMaxVolumesPerNode: 0
 #   "false" - Disable dynamic Storage Group support (backward compatible)
 # Default value: "false"
 dynamicSGEnabled: "false"
-
 # controller: configure controller specific parameters
 controller:
   # controllerCount: Define the number of PowerMax controller nodes
@@ -223,13 +209,11 @@ controller:
   # Allowed values: n, where n > 0
   # Default value: None
   controllerCount: 2
-
   # volumeNamePrefix: Define a prefix that is prepended to volumes.
   # THIS MUST BE ALL LOWER CASE.
   # Default value: csivol
   # Examples: "volumes", "vol"
   volumeNamePrefix: csivol
-
   snapshot:
     # enabled: Enable/Disable volume snapshot feature
     # Allowed values:
@@ -242,7 +226,6 @@ controller:
     # Default value: csi-snap
     # Examples: "snap", "snapshot"
     snapNamePrefix: csi-snap
-
     # volumeGroupSnapshot: allows to configure volume group snapshot support
     # volumeGroupSnapshot CRDs (v1beta2) must be installed before enabling this feature
   volumeGroupSnapshot:
@@ -252,7 +235,6 @@ controller:
     #   false: disable volume group snapshot feature
     # Default value: false
     enabled: false
-
   resizer:
     # enabled: Enable/Disable volume expansion feature
     # Allowed values:
@@ -260,7 +242,6 @@ controller:
     #   false: disable volume snapshot feature(do not install resizer sidecar)
     # Default value: None
     enabled: true
-
   # nodeSelector: Define node selection constraints for controller pods.
   # For the pod to be eligible to run on a node, the node must have each
   # of the indicated key-value pairs as labels.
@@ -298,12 +279,10 @@ controller:
     #   false: disable checking of health condition of CSI volumes
     # Default value: None
     enabled: false
-
     # interval: Interval of monitoring volume health condition
     # Allowed values: Number followed by unit of time (s,m,h)
     # Default value: 60s
     interval: 60s
-
 # node: configure node specific parameters
 node:
   # nodeSelector: Define node selection constraints for node pods.
@@ -338,7 +317,6 @@ node:
     - key: "node.kubernetes.io/network-unavailable"
       operator: "Exists"
       effect: "NoExecute"
-
   # health monitor showcase the volume usage and volume condition
   healthMonitor:
     # enabled: Enable/Disable health monitor of CSI volumes- volume usage, volume condition
@@ -347,7 +325,6 @@ node:
     #   false: disable checking of health condition of CSI volumes
     # Default value: false
     enabled: false
-
   # Topology control provides a way to filter topology keys
   # Please refer to the doc website about a detailed explanation on its configuration and usage
   topologyControl:
@@ -357,7 +334,6 @@ node:
     #   false: disable the filtration based on config map
     # Default value: false
     enabled: false
-
 # enableCHAP: Determine if the driver is going to configure
 # ISCSI node databases on the nodes with the CHAP credentials
 # If enabled, the CHAP secret must be provided in the credentials secret
@@ -367,7 +343,6 @@ node:
 #   "false" - CHAP is disabled
 # Default value: "false"
 enableCHAP: false
-
 # Use of this param is depreciated;
 # setting this to any value will have no effect.
 # "unisphere" defines the Unisphere endpoint,
@@ -415,7 +390,6 @@ csireverseproxy:
 # Default value: None
 # Examples: "XYZ"
 clusterPrefix: ABC
-
 # "skipCertificateValidation" determines if driver is going to skip verification
 # of TLS certificates while connecting to Unisphere RESTAPI interface
 # If it is set to false,
@@ -426,7 +400,6 @@ clusterPrefix: ABC
 #   "false" - TLS certificates will be verified
 # Default value: "true"
 skipCertificateValidation: "true"
-
 # "powerMaxDebug" enables low level and http traffic logging
 # between the CSI driver and Unisphere.
 # Do not enable this unless asked to do so by the support team.
@@ -435,7 +408,6 @@ skipCertificateValidation: "true"
 #   "false" - Traffic between the CSI driver and Unisphere will not be logged
 # Default value: "false"
 powerMaxDebug: "false"
-
 # nodeNameTemplate: Provide a template for the CSI driver to use
 # while creating the Host/IG on the array for the nodes in the cluster.
 # It is of the format a-b-c-%foo%-xyz
@@ -445,7 +417,6 @@ powerMaxDebug: "false"
 # Default value: "" <empty>
 # Examples: "a-b-c-worker1-xyz" , "a-b-c-workernode-xyz"
 nodeNameTemplate: ""
-
 # modifyHostName: Change any existing host names.
 # When nodenametemplate is set,
 # it changes the name to the specified format
@@ -455,12 +426,10 @@ nodeNameTemplate: ""
 #   "false" - Driver default host name format will be used
 # Default value: "false"
 modifyHostName: "false"
-
 # openshift: Define that the installation
 # is being done on a Red Hat OpenShift cluster in the Helm Chart
 # Don't modify this value as this value is overridden by the install script
 openshift: false
-
 # CSM module attributes
 # Set this to true to enable replication
 # Replication CRDs must be installed before installing driver
@@ -479,7 +448,6 @@ replication:
   # Default value: "replication.storage.dell.com"
   # Examples: "replication.storage.dell.com", "rdf.storage.dell.com"
   replicationPrefix: "replication.storage.dell.com"
-
 # CSM module attributes
 # Set this to true to enable migration
 # Allowed values:
@@ -492,7 +460,6 @@ migration:
   # Default value: "migration.storage.dell.com"
   # Examples: "migration.storage.dell.com"
   migrationPrefix: "migration.storage.dell.com"
-
 # CSM module attributes
 # authorization: enable csm-authorization for RBAC
 # Deploy and configure authorization before installing driver
@@ -511,7 +478,6 @@ authorization:
   #   "false" - TLS certificate will be verified
   # Default value: "true"
   skipCertificateValidation: true
-
 # Storage Capacity Tracking
 # Note: Capacity tracking is supported in kubernetes v1.24 and above, this feature will be automatically disabled in older versions.
 storageCapacity:
@@ -525,7 +491,6 @@ storageCapacity:
   # Allowed values: 1m,2m,3m,...,10m,...,60m etc
   # Default value: 5m
   pollInterval: 5m
-
 # VMware/vSphere virtualization support
 # set enable to true, if you to enable VMware virtualized environment support via RDM
 # Allowed Values:
@@ -546,7 +511,6 @@ vSphere:
   vCenterHost: "00.000.000.00"
   # vCenterCredSecret: secret name for the vCenter credentials
   vCenterCredSecret: vcenter-creds
-
 # Enable this feature only after contact support for additional information
 podmon:
   # podmonAPIPort: Defines the port to be used within the kubernetes cluster
@@ -566,7 +530,6 @@ podmon:
       - "--driver-config-params=/powermax-config-params/driver-config-params.yaml"
       - "--driverPodLabelValue=dell-storage"
       - "--ignoreVolumelessPods=false"
-
   node:
     args:
       - "--csisock=unix:/var/lib/kubelet/plugins/powermax.emc.dell.com/csi_sock"

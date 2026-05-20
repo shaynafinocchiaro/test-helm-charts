@@ -3,7 +3,6 @@
 # version: version of this values file
 # Note: Do not change this value
 version: "v2.17.0"
-
 images:
   # "driver" defines the container image, used for the driver container.
   driver:
@@ -21,7 +20,6 @@ images:
     image: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.16.0
   healthmonitor:
     image: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.17.0
-
   # CSM sidecars
   replication:
     image: quay.io/dell/container-storage-modules/dell-csi-replicator:v1.15.0
@@ -31,32 +29,27 @@ images:
     image: quay.io/dell/container-storage-modules/csm-authorization-sidecar:v2.5.0
   metadataretriever:
     image: quay.io/dell/container-storage-modules/csi-metadata-retriever:v1.14.0
-
 # CSI driver log level
 # Allowed values: "error", "warn"/"warning", "info", "debug"
 # Default value: "info"
 logLevel: "info"
-
 # certSecretCount: Represents number of certificate secrets, which user is going to create for
 # ssl authentication. (isilon-cert-0..isilon-cert-n)
 # Allowed values: n, where n > 0
 # Default value: None
 certSecretCount: 1
-
 # allowedNetworks: Custom networks for PowerScale export
 #   Specify list of networks which can be used for NFS I/O traffic; CIDR format should be used.
 # Allowed values: list of one or more networks
 # Default value: None
 # Examples: [192.168.1.0/24, 192.168.100.0/22]
 allowedNetworks: []
-
 # maxIsilonVolumesPerNode: Specify default value for maximum number of volumes that controller can publish to the node.
 # If value is zero CO SHALL decide how many volumes of this type can be published by the controller to the node.
 # This limit is applicable to all the nodes in the cluster for which node label 'max-isilon-volumes-per-node' is not set.
 # Allowed values: n, where n >= 0
 # Default value: 0
 maxIsilonVolumesPerNode: 0
-
 # imagePullPolicy: Policy to determine if the image should be pulled prior to starting the container.
 # Allowed values:
 #  Always: Always pull the image.
@@ -64,7 +57,6 @@ maxIsilonVolumesPerNode: 0
 #  Never: Never pull the image.
 # Default value: None
 imagePullPolicy: IfNotPresent
-
 # verbose: Indicates what content of the OneFS REST API message should be logged in debug level logs
 # Allowed Values:
 #   0: log full content of the HTTP request and response
@@ -72,12 +64,10 @@ imagePullPolicy: IfNotPresent
 #   2: log only 1st line of the HTTP request and response
 # Default value: 0
 verbose: 1
-
 # Specify kubelet config dir path.
 # Ensure that the config.yaml file is present at this path.
 # Default value: /var/lib/kubelet
 kubeletConfigDir: /var/lib/kubelet
-
 # enableCustomTopology: Specify if custom topology label <provisionerName>.dellemc.com/<powerscalefqdnorip>:<provisionerName>
 # has to be used for making connection to backend PowerScale Array.
 # If enableCustomTopology is set to true, then do not specify allowedTopologies in storage class.
@@ -86,7 +76,6 @@ kubeletConfigDir: /var/lib/kubelet
 #   false: disable custom topology
 # Default value: false
 enableCustomTopology: false
-
 # fsGroupPolicy: Defines if the underlying volume supports changing ownership and permission of the volume before being mounted.
 # Allowed values:
 #   ReadWriteOnceWithFSType: supports volume ownership and permissions change only if the fsType is defined
@@ -96,23 +85,19 @@ enableCustomTopology: false
 #   None: volumes will be mounted with no modifications.
 # Default value: ReadWriteOnceWithFSType
 fsGroupPolicy: ReadWriteOnceWithFSType
-
 # podmonAPIPort: Defines the port to be used within the kubernetes cluster
 # Allowed values:
 #   Any valid and free port.
 # Default value: 8083
 podmonAPIPort: 8083
-
 # maxPathLen: this parameter is used for setting the maximum Path length for the given volume.
 # Default value: 192
 # Examples: 192, 256
 maxPathLen: 192
-
 # azReconcileInterval: Interval to monitor and reconcile network interface labels on nodes.
 # Allowed values: Number followed by unit of time (s,m,h)
 # Default value: 1h
 azReconcileInterval: 1h
-
 # controller: configure controller pod specific parameters
 controller:
   # controllerCount: defines the number of csi-powerscale controller pods to deploy to
@@ -120,30 +105,25 @@ controller:
   # Allowed values: n, where n > 0
   # Default value: None
   controllerCount: 2
-
   # volumeNamePrefix: Prefix of PersistentVolume names created
   # Allowed values: string
   # Default value: csivol
   # Examples: "k8s", "app1"
   volumeNamePrefix: csivol
-
   # leaderElection: configure leader election parameters
   leaderElection:
     # Duration, that non-leader candidates will wait to force acquire leadership
     # Allowed values: Duration, in seconds. Must be greater than leaderElectionRenewDeadline
     # Default value: 15s
     leaderElectionLeaseDuration: 15s
-
     # Duration, that the acting leader will retry refreshing leadership before giving up
     # Allowed values: Duration, in seconds. Must be greater than leaderElectionRetryPeriod
     # Default value: 10s
     leaderElectionRenewDeadline: 10s
-
     # Duration, the LeaderElector clients should wait between tries of actions.
     # Allowed values: Duration, in seconds
     # Default value: 5s
     leaderElectionRetryPeriod: 5s
-
   # replication: allows to configure replication
   # Replication CRDs must be installed before installing driver
   replication:
@@ -153,17 +133,14 @@ controller:
     #   false: disable replication feature(do not install dell-csi-replicator sidecar)
     # Default value: false
     enabled: false
-
     # replicationContextPrefix: prefix to use for naming of resources created by replication feature
     # Allowed values: string
     # Default value: powerscale
     replicationContextPrefix: "powerscale"
-
     # replicationPrefix: prefix to prepend to storage classes parameters
     # Allowed values: string
     # Default value: replication.storage.dell.com
     replicationPrefix: "replication.storage.dell.com"
-
   snapshot:
     # enabled: Enable/Disable volume snapshot feature
     # Allowed values:
@@ -171,13 +148,11 @@ controller:
     #   false: disable volume snapshot feature(do not install snapshotter sidecar)
     # Default value: None
     enabled: true
-
     # snapNamePrefix: Prefix to apply to the names of a created snapshots
     # Allowed values: string
     # Default value: csi-snap
     # Examples: "snap", "snapshot"
     snapNamePrefix: csi-snap
-
   resizer:
     # enabled: Enable/Disable volume expansion feature
     # Allowed values:
@@ -185,7 +160,6 @@ controller:
     #   false: disable volume snapshot feature(do not install resizer sidecar)
     # Default value: None
     enabled: true
-
   healthMonitor:
     # enabled: Enable/Disable health monitor of CSI volumes- volume status, volume condition
     # Allowed values:
@@ -193,12 +167,10 @@ controller:
     #   false: disable checking of health condition of CSI volumes
     # Default value: None
     enabled: false
-
     # interval: Interval of monitoring volume health condition
     # Allowed values: Number followed by unit of time (s,m,h)
     # Default value: 60s
     interval: 60s
-
   # nodeSelector: Define node selection constraints for pods of controller deployment.
   # For the pod to be eligible to run on a node, the node must have each
   # of the indicated key-value pairs as labels.
@@ -223,7 +195,6 @@ controller:
   # - key: "node-role.kubernetes.io/control-plane"
   #   operator: "Exists"
   #   effect: "NoSchedule"
-
 # node: configure node pod specific parameters
 node:
   # nodeSelector: Define node selection constraints for pods of node daemonset
@@ -294,7 +265,6 @@ node:
   # Prior to v1.5 of the driver, the default DNS policy was ClusterFirst.
   # In certain scenarios, users might need to change the default dnsPolicy.
   dnsPolicy: ClusterFirstWithHostNet
-
   healthMonitor:
     # enabled: Enable/Disable health monitor of CSI volumes- volume usage, volume condition
     # Allowed values:
@@ -302,7 +272,6 @@ node:
     #   false: disable checking of health condition of CSI volumes
     # Default value: None
     enabled: false
-
 ## PLATFORM ATTRIBUTES
 ######################
 # endpointPort: Specify the HTTPs port number of the PowerScale OneFS API server
@@ -312,7 +281,6 @@ node:
 # Allowed value: valid port number
 # Default value: 8080
 endpointPort: 8080
-
 # skipCertificateValidation: Specify whether the PowerScale OneFS API server's certificate chain and host name should be verified.
 # Formerly this attribute was named as "isiInsecure"
 # This value acts as a default value for skipCertificateValidation, if not specified for a cluster config in secret
@@ -321,20 +289,17 @@ endpointPort: 8080
 #   false: verify OneFS API server's certificates
 # Default value: false
 skipCertificateValidation: true
-
 # isiAuthType: Indicates whether the authentication will be session-based or basic.
 # Allowed values:
 #   0: enables basic Authentication
 #   1: enables session-based Authentication
 # Default value: 0
 isiAuthType: 0
-
 # isiAccessZone: The name of the access zone a volume can be created in.
 # If storageclass is missing with AccessZone parameter, then value of isiAccessZone is used for the same.
 # Default value: System
 # Examples: System, zone1
 isiAccessZone: System
-
 # enableQuota: Indicates whether the provisioner should attempt to set (later unset) quota
 # on a newly provisioned volume.
 # This requires SmartQuotas to be enabled on PowerScale cluster.
@@ -342,7 +307,6 @@ isiAccessZone: System
 #   true: set quota for volume
 #   false: do not set quota for volume
 enableQuota: true
-
 # isiPath: The base path for the volumes to be created on PowerScale cluster.
 # This value acts as a default value for isiPath, if not specified for a cluster config in secret
 # Ensure that this path exists on PowerScale cluster.
@@ -350,14 +314,12 @@ enableQuota: true
 # Default value: /ifs
 # Examples: /ifs/data/csi, /ifs/engineering
 isiPath: /ifs/data/csi
-
 # isiVolumePathPermissions: The permissions for isi volume directory path
 # This value acts as a default value for isiVolumePathPermissions, if not specified for a cluster config in secret
 # Allowed values: valid octal mode number
 # Default value: "0777"
 # Examples: "0777", "777", "0755"
 isiVolumePathPermissions: "0777"
-
 # ignoreUnresolvableHosts: Ignore unresolvable hosts on the OneFS
 # When set to true, OneFS allows new host to add to existing export list though any of the existing hosts from the
 # same exports are unresolvable/doesn't exist anymore.
@@ -366,7 +328,6 @@ isiVolumePathPermissions: "0777"
 #   false: exhibits OneFS default behavior i.e. if any of existing hosts are unresolvable while adding new one it fails
 # Default value: false
 ignoreUnresolvableHosts: false
-
 # noProbeOnStart: Indicates whether the controller/node should probe all the PowerScale clusters during driver initialization
 # When set to true, the driver will not set node labels, please manually add
 # the label <provisionerName>.dellemc.com/<powerscalefqdnorip>:<provisionerName> on the nodes for each of the clusters reachable from the node.
@@ -375,14 +336,12 @@ ignoreUnresolvableHosts: false
 #   false: probe all PowerScale clusters during driver initialization
 # Default value: false
 noProbeOnStart: false
-
 # autoProbe: automatically probe the PowerScale cluster if not done already during CSI calls.
 # Allowed values:
 #   true : enable auto probe.
 #   false: disable auto probe.
 # Default value: false
 autoProbe: true
-
 authorization:
   enabled: false
   # proxyHost: hostname of the csm-authorization server
@@ -394,7 +353,6 @@ authorization:
   #   "false" - TLS certificate will be verified
   # Default value: "true"
   skipCertificateValidation: true
-
 # Storage Capacity Tracking
 # Note: Capacity tracking is supported in kubernetes v1.24 and above, this feature will be automatically disabled in older versions.
 storageCapacity:
@@ -408,7 +366,6 @@ storageCapacity:
   # Allowed values: 1m,2m,3m,...,10m,...,60m etc
   # Default value: 5m
   pollInterval: 5m
-
 # Enable this feature only after contact support for additional information
 podmon:
   enabled: false
@@ -423,7 +380,6 @@ podmon:
       - "--driver-config-params=/csi-isilon-config-params/driver-config-params.yaml"
       - "--driverPodLabelValue=dell-storage"
       - "--ignoreVolumelessPods=false"
-
   node:
     args:
       - "--csisock=unix:/var/lib/kubelet/plugins/csi-isilon/csi_sock"

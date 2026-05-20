@@ -1,0 +1,8 @@
+charts/csi-lightningfs image (images.provisioner.image): registry.k8s.io/sig-storage/csi-provisioner:v6.1.1 → registry.k8s.io/sig-storage/csi-provisioner:v6.2.0
+charts/csi-lightningfs image (images.healthmonitor.image): registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.16.0 → registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.17.0
+charts/csi-powerstore dependency (csm-disaster-recovery): 1.0.0 → 1.1.0
+charts/csm-authorization-v2.0 image (authorization.images.opaKubeMgmt.image): openpolicyagent/kube-mgmt:9.3.0 → openpolicyagent/kube-mgmt:11.0.6
+charts/csm-disaster-recovery (version): 1.0.0 → 1.1.0
+charts/csm-disaster-recovery (appVersion): 1.0.0 → 1.1.0
+container-storage-modules/container-storage-modules (version): 1.10.0 → 1.17.0
+container-storage-modules/container-storage-modules (appVersion): 1.10.0 → 1.17.0

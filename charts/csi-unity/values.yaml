@@ -5,7 +5,6 @@
 # Note: Do not change this value
 # Examples : "v2.17.0" , "nightly"
 version: "v2.17.0"
-
 images:
   # "driver" defines the container image, used for the driver container.
   driver:
@@ -23,29 +22,24 @@ images:
     image: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.16.0
   healthmonitor:
     image: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.17.0
-
   # CSM sidecars
   podmon:
     image: quay.io/dell/container-storage-modules/podmon:v1.16.0
-
 # LogLevel is used to set the logging level of the driver.
 # Allowed values: "error", "warn"/"warning", "info", "debug"
 # Default value: "info"
 logLevel: "info"
-
 # certSecretCount: Represents number of certificate secrets, which user is going to create for
 # ssl authentication. (unity-cert-0..unity-cert-n)
 # Allowed values: n, where n > 0
 # Default value: None
 certSecretCount: 1
-
 # allowedNetworks: Custom networks for Unity export
 # Specify list of networks which can be used for NFS I/O traffic; CIDR format should be used.
 # Allowed values: list of one or more networks (comma separated)
 # Default value: None
 # Examples: 192.168.1.0/24, 192.168.100.0/22
 allowedNetworks:
-
 # imagePullPolicy: Policy to determine if the image should be pulled prior to starting the container.
 # Allowed values:
 # Always: Always pull the image.
@@ -53,12 +47,10 @@ allowedNetworks:
 # Never: Never pull the image.
 # Default value: IfNotPresent
 imagePullPolicy: IfNotPresent
-
 # Specify kubelet config dir path.
 # Ensure that the config.yaml file is present at this path.
 # Default value: /var/lib/kubelet
 kubeletConfigDir: /var/lib/kubelet
-
 # fsGroupPolicy: Defines if the underlying volume supports changing ownership and permission of the volume before being mounted.
 # Allowed values:
 #   ReadWriteOnceWithFSType: supports volume ownership and permissions change only if the fsType is defined
@@ -68,7 +60,6 @@ kubeletConfigDir: /var/lib/kubelet
 #   None: volumes will be mounted with no modifications.
 # Default value: ReadWriteOnceWithFSType
 fsGroupPolicy: ReadWriteOnceWithFSType
-
 # To set nodeSelectors and tolerations for controller.
 # controller: configure controller pod specific parameters
 controller:
@@ -77,13 +68,11 @@ controller:
   # Allowed values: n, where n > 0
   # Default value: None
   controllerCount: 2
-
   # volumeNamePrefix: Prefix of PersistentVolume names created
   # Allowed values: string
   # Default value: csivol
   # Examples: "k8s", "app1"
   volumeNamePrefix: csivol
-
   snapshot:
     # enabled: Enable/Disable volume snapshot feature
     # Allowed values:
@@ -91,13 +80,11 @@ controller:
     #   false: disable volume snapshot feature(do not install snapshotter sidecar)
     # Default value: None
     enabled: true
-
     # snapNamePrefix: Prefix to apply to the names of a created snapshots
     # Allowed values: string
     # Default value: csi-snap
     # Examples: "snap", "snapshot"
     snapNamePrefix: csi-snap
-
   resizer:
     # enabled: Enable/Disable volume expansion feature
     # Allowed values:
@@ -105,7 +92,6 @@ controller:
     #   false: disable volume snapshot feature(do not install resizer sidecar)
     # Default value: None
     enabled: true
-
   # nodeSelector: Define node selection constraints for controller pods.
   # For the pod to be eligible to run on a node, the node must have each
   # of the indicated key-value pairs as labels.
@@ -130,7 +116,6 @@ controller:
   #  - key: "node-role.kubernetes.io/control-plane"
   #    operator: "Exists"
   #    effect: "NoSchedule"
-
   healthMonitor:
     # enabled: Enable/Disable health monitor of CSI volumes- volume state, volume condition
     # Allowed values:
@@ -138,12 +123,10 @@ controller:
     #   false: disable checking of health condition of CSI volumes
     # Default value: None
     enabled: false
-
     # interval: Interval of monitoring volume health condition
     # Allowed values: Number followed by unit of time (s,m,h)
     # Default value: 60s
     interval: 60s
-
 # node: configure node pod specific parameters
 node:
   # dnsPolicy : Define the DNS Policy of the Node service.
@@ -152,7 +135,6 @@ node:
   # In certain scenarios, users might need to change the default dnsPolicy.
   # Default value: None
   dnsPolicy: "ClusterFirstWithHostNet"
-
   healthMonitor:
     # enabled: Enable/Disable health monitor of CSI Volumes - volume usage
     # Allowed values:
@@ -160,7 +142,6 @@ node:
     #   false: disable checking of health condition of CSI volumes
     # Default value: None
     enabled: false
-
   # nodeSelector: Define node selection constraints for node pods.
   # For the pod to be eligible to run on a node, the node must have each
   # of the indicated key-value pairs as labels.
@@ -212,7 +193,6 @@ node:
   #  - key: "isilon.podmon.storage.dell.com"
   #    operator: "Exists"
   #    effect: "NoSchedule"
-
 # CSM module attributes
 # service to monitor failing jobs and notify
 podmon:
@@ -241,7 +221,6 @@ podmon:
       - "--driver-config-params=/unity-config/driver-config-params.yaml"
       - "--driverPodLabelValue=dell-storage"
       - "--ignoreVolumelessPods=false"
-
 ### The below parameters have been discontinued for configuration from secret.yaml and will have to be configured only in values.yaml
 
 # syncNodeInfoInterval - Time interval to add node info to array. Default 15 minutes. Minimum value should be 1.
@@ -249,25 +228,21 @@ podmon:
 # Default value: 15
 # Examples : 0 , 2
 syncNodeInfoInterval: 15
-
 # allowRWOMultiPodAccess - Flag to enable sharing of volumes across multiple pods within the same node in RWO access mode.
 # Allowed values: boolean
 # Default value: "false"
 # Examples : "true" , "false"
 allowRWOMultiPodAccess: "false"
-
 # maxUnityVolumesPerNode - Maximum number of volumes that controller can publish to the node.
 # Allowed values: integer
 # Default value: 0
 # Examples : 0 , 1
 maxUnityVolumesPerNode: 0
-
 # tenantName - Tenant name that need to added while adding host entry to the array.
 # Allowed values: string
 # Default value: ""
 # Examples : "tenant2" , "tenant3"
 tenantName: ""
-
 # Storage Capacity Tracking
 # Note: Capacity tracking is supported in kubernetes v1.24 and above, this feature will be automatically disabled in older versions.
 storageCapacity:

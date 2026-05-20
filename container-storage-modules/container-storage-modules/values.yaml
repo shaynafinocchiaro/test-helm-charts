@@ -38,7 +38,6 @@ csi-powerstore:
       image: registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.16.0
     healthmonitor:
       image: registry.k8s.io/sig-storage/csi-external-health-monitor-controller:v0.17.0
-
     # CSM sidecars
     replication:
       image: quay.io/dell/container-storage-modules/dell-csi-replicator:v1.15.0
@@ -213,7 +212,6 @@ csi-powermax:
     enabled: true
   maxPowerMaxVolumesPerNode: 0
   dynamicSGEnabled: false
-
 ## CSI PowerScale
 ########################
 csi-isilon:
@@ -312,7 +310,6 @@ csi-isilon:
   authorization:
     enabled: false
     proxyHost:
-
 ## CSI PowerFlex
 ########################
 csi-vxflexos:
@@ -432,7 +429,6 @@ csi-vxflexos:
     enabled: false
     sidecarProxyImage: quay.io/dell/container-storage-modules/csm-authorization-sidecar:v2.5.0
     proxyHost:
-
 ## CSI Unity
 ########################
 csi-unity:
@@ -462,7 +458,6 @@ csi-unity:
   # ssl authentication. (unity-cert-0..unity-cert-n)
   # Allowed values: n, where n > 0
   certSecretCount: 1
-
   # fsGroupPolicy: Defines if the underlying volume supports changing ownership and permission of the volume before being mounted.
   # Allowed values:
   #   ReadWriteOnceWithFSType: supports volume ownership and permissions change only if the fsType is defined
@@ -472,23 +467,17 @@ csi-unity:
   #   None: volumes will be mounted with no modifications.
   # Default value: ReadWriteOnceWithFSType
   fsGroupPolicy: ReadWriteOnceWithFSType
-
   # To set nodeSelectors and tolerations for controller.
   # controller: configure controller pod specific parameters
   controller:
     controllerCount: 2
-
     snapshot:
       enabled: true
-
     resizer:
       enabled: true
-
     nodeSelector:
-
     healthMonitor:
       enabled: false
-
   # node: configure node pod specific parameters
   node:
     # dnsPolicy : Define the DNS Policy of the Node service.
@@ -497,12 +486,9 @@ csi-unity:
     # In certain scenarios, users might need to change the default dnsPolicy.
     # Default value: None
     dnsPolicy: "ClusterFirstWithHostNet"
-
     healthMonitor:
       enabled: false
-
     nodeSelector:
-
     # tolerations: Define tolerations for the node daemonset, if required.
     # Default value: None
     tolerations:
@@ -564,21 +550,16 @@ csi-unity:
         - "--driver-config-params=/unity-config/driver-config-params.yaml"
         - "--driverPodLabelValue=dell-storage"
         - "--ignoreVolumelessPods=false"
-
   # allowRWOMultiPodAccess - Flag to enable sharing of volumes across multiple pods within the same node in RWO access mode.
   allowRWOMultiPodAccess: "false"
-
   # maxUnityVolumesPerNode - Maximum number of volumes that controller can publish to the node.
   maxUnityVolumesPerNode: 0
-
   # tenantName - Tenant name that need to added while adding host entry to the array.
   tenantName: ""
-
 # Storage Capacity Tracking
 # Note: Capacity tracking is supported in kubernetes v1.24 and above, this feature will be automatically disabled in older versions.
 storageCapacity:
   enabled: true
-
 ## K8S/Module ATTRIBUTES
 ##########################################
 
@@ -586,7 +567,6 @@ storageCapacity:
 ########################
 csm-replication:
   enabled: false
-
 ## Observability
 ########################
 karavi-observability:
@@ -601,7 +581,6 @@ karavi-observability:
     enabled: false
   cert-manager:
     enabled: false
-
 ## K8S/Cert-manager ATTRIBUTES
 ########################
 cert-manager:
