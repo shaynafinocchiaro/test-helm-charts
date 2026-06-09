@@ -42,10 +42,9 @@ jobs:
       - name: Checkout csm repository
         uses: actions/checkout@v6
         with:
-          repository: dell/csm
+          repository: shaynafinocchiaro/test-csm
           path: csm
           #ref: ${{ inputs.source-branch }}
-          ref: usr/sf/downstream-helm-action
 
       - name: Read values from csm-versions.yaml
         id: read_values
